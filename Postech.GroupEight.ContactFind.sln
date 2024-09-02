@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postech.GroupEight.ContactF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postech.GroupEight.ContactFind.Infra", "Postech.GroupEight.ContactFind.Infra\Postech.GroupEight.ContactFind.Infra.csproj", "{F68A3140-6F86-4A79-96B5-7D589F8845E1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{49279882-E194-4D19-B849-C6FE2BDB30EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{264C1432-5C9D-4C51-B51F-23B57E2FA810} = {49279882-E194-4D19-B849-C6FE2BDB30EB}
+		{26D954D4-4CBF-4928-AB59-33597D594AE9} = {49279882-E194-4D19-B849-C6FE2BDB30EB}
+		{FF315CEC-B5DC-4A78-B26F-7360A5E153EF} = {49279882-E194-4D19-B849-C6FE2BDB30EB}
+		{F68A3140-6F86-4A79-96B5-7D589F8845E1} = {49279882-E194-4D19-B849-C6FE2BDB30EB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C9A3C22C-1B9A-40E5-B620-7DED429643A8}

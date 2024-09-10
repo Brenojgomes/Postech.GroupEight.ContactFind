@@ -7,8 +7,15 @@ using Postech.GroupEight.ContactFind.Infra.Repositories;
 
 namespace Postech.GroupEight.ContactFind.Infra
 {
+    /// <summary>
+    /// Provides extension methods to configure the infrastructure services.
+    /// </summary>
     public static class InfrastuctureModule
     {
+        /// <summary>
+        /// Adds the infrastructure services to the specified <see cref="IServiceCollection"/>.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> to add the services to.</param>
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddMongo();
@@ -16,6 +23,10 @@ namespace Postech.GroupEight.ContactFind.Infra
             return services;
         }
 
+        /// <summary>
+        /// Adds the MongoDB services to the specified <see cref="IServiceCollection"/>.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> to add the services to.</param>
         public static IServiceCollection AddMongo(this IServiceCollection services)
         {
             services.AddSingleton<MongoDbOptions>(sp =>
@@ -45,6 +56,10 @@ namespace Postech.GroupEight.ContactFind.Infra
             return services;
         }
 
+        /// <summary>
+        /// Adds the repository services to the specified <see cref="IServiceCollection"/>.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> to add the services to.</param>
         private static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddSingleton<IContactRepository, ContactRepository>();

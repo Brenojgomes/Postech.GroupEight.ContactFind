@@ -7,6 +7,7 @@ using Postech.GroupEight.ContactFind.Application.Extensions;
 using Postech.GroupEight.ContactFind.Core.Exceptions.Common;
 using Postech.GroupEight.ContactFind.Infra;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -72,3 +73,9 @@ app.MapGet("/contacts", async (IMediator mediator, [AsParameters] FindContactInp
 .WithOpenApi();
 
 app.Run();
+
+[ExcludeFromCodeCoverage]
+public partial class Program
+{
+    protected Program() { }
+}

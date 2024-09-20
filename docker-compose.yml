@@ -1,0 +1,10 @@
+services:
+  contactfind-api:
+    build:
+      context: .
+      dockerfile: src/Postech.GroupEight.ContactFind.Api/Dockerfile
+    image: contactfind-api:latest
+    ports:
+      - "8181:8181"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development

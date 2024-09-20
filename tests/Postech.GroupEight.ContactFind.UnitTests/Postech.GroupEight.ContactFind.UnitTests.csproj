@@ -25,10 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Postech.GroupEight.ContactFind.Api\Postech.GroupEight.ContactFind.Api.csproj" />
-    <ProjectReference Include="..\Postech.GroupEight.ContactFind.Application\Postech.GroupEight.ContactFind.Application.csproj" />
-    <ProjectReference Include="..\Postech.GroupEight.ContactFind.Core\Postech.GroupEight.ContactFind.Core.csproj" />
-    <ProjectReference Include="..\Postech.GroupEight.ContactFind.Infra\Postech.GroupEight.ContactFind.Infra.csproj" />
+    <ProjectReference Include="..\..\src\Postech.GroupEight.ContactFind.Api\Postech.GroupEight.ContactFind.Api.csproj" />
+    <ProjectReference Include="..\..\src\Postech.GroupEight.ContactFind.Application\Postech.GroupEight.ContactFind.Application.csproj" />
+    <ProjectReference Include="..\..\src\Postech.GroupEight.ContactFind.Core\Postech.GroupEight.ContactFind.Core.csproj" />
+    <ProjectReference Include="..\..\src\Postech.GroupEight.ContactFind.Infra\Postech.GroupEight.ContactFind.Infra.csproj" />
   </ItemGroup>
 
 </Project>

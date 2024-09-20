@@ -72,7 +72,7 @@ app.MapGet("/contacts", async (IMediator mediator, [AsParameters] FindContactInp
 .WithMetadata(new SwaggerResponseAttribute(500, "Unexpected error while finding the contacts"))
 .WithOpenApi();
 
-app.Run();
+app.Run("http://+:5266");
 
 [ExcludeFromCodeCoverage]
 public partial class Program

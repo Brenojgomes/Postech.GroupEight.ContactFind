@@ -1,27 +1,24 @@
-# Use the official .NET SDK image to build the application
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 5266
+
+ENV ASPNETCORE_URLS=http://+:5266
+
+USER app
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG configuration=Release
 WORKDIR /src
-
-# Copy the .csproj file and restore dependencies
-COPY ["Postech.GroupEight.ContactFind/Postech.GroupEight.ContactFind.csproj", "Postech.GroupEight.ContactFind/"]
-COPY ["Postech.GroupEight.ContactFind.Application/Postech.GroupEight.ContactFind.Application.csproj", "Postech.GroupEight.ContactFind.Application/"]
-COPY ["Postech.GroupEight.ContactFind.Core/Postech.GroupEight.ContactFind.Core.csproj", "Postech.GroupEight.ContactFind.Core/"]
-COPY ["Postech.GroupEight.ContactFind.Infrastructure/Postech.GroupEight.ContactFind.Infrastructure.csproj", "Postech.GroupEight.ContactFind.Infrastructure/"]
-COPY ["Postech.GroupEight.ContactFind.UnitTests/Postech.GroupEight.ContactFind.UnitTests.csproj", "Postech.GroupEight.ContactFind.UnitTests/"]
-
-RUN dotnet restore "Postech.GroupEight.ContactFind/Postech.GroupEight.ContactFind.csproj"
-
-# Copy the remaining source code and build the application
+COPY ["src/Postech.GroupEight.ContactFind.Api/Postech.GroupEight.ContactFind.Api.csproj", "src/Postech.GroupEight.ContactFind.Api/"]
+RUN dotnet restore "src/Postech.GroupEight.ContactFind.Api/Postech.GroupEight.ContactFind.Api.csproj"
 COPY . .
-WORKDIR "/src/Postech.GroupEight.ContactFind"
-RUN dotnet build "Postech.GroupEight.ContactFind.csproj" -c Release -o /app/build
+WORKDIR "/src/src/Postech.GroupEight.ContactFind.Api"
+RUN dotnet build "Postech.GroupEight.ContactFind.Api.csproj" -c $configuration -o /app/build
 
-# Publish the application
 FROM build AS publish
-RUN dotnet publish "Postech.GroupEight.ContactFind.csproj" -c Release -o /app/publish
+ARG configuration=Release
+RUN dotnet publish "Postech.GroupEight.ContactFind.Api.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
 
-# Use the official .NET runtime image to run the application
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+FROM build AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Postech.GroupEight.ContactFind.dll"]
+ENTRYPOINT ["dotnet", "Postech.GroupEight.ContactFind.Api.dll"]

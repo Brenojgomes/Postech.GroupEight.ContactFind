@@ -5,6 +5,10 @@ services:
       dockerfile: src/Postech.GroupEight.ContactFind.Api/Dockerfile
     image: contactfind-api:latest
     ports:
-      - "8181:8181"
+      - "5266:5266"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+
+networks:
+  app-network:
+    external: true

@@ -8,6 +8,9 @@ services:
       - "5266:5266"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - MONGO_CONNECTION_STRING=mongodb://fiap:fiap123456@mongodb:27017/admin
+    networks:
+      - app-network
 
 networks:
   app-network:

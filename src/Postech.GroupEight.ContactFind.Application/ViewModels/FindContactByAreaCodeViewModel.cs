@@ -37,5 +37,20 @@ namespace Postech.GroupEight.ContactFind.Application.ViewModels
         /// The area code phone number of the contact.
         /// </summary>
         public string AreaCode { get; init; }
+
+        /// <summary>
+        /// The creation date and time of the entity.
+        /// </summary>
+        public DateTime CreatedAt { get; set; }
+
+        /// <summary>
+        /// The last modification date and time of the entity.
+        /// </summary>
+        public DateTime? ModifiedAt { get; set; }
+
+        /// <summary>
+        /// A value indicating whether the entity is active.
+        /// </summary>
+        public bool Active { get; set; }
     }
 }

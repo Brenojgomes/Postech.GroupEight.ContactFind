@@ -21,7 +21,10 @@ namespace Postech.GroupEight.ContactFind.Application.Extensions
                 FirstName = contact.FirstName,
                 LastName = contact.LastName,
                 AreaCode = contact.AreaCode,
-                Number = contact.Number
+                Number = contact.Number,
+                Active = contact.Active,
+                CreatedAt = contact.CreatedAt,
+                ModifiedAt = contact.ModifiedAt
             });
         }
     }

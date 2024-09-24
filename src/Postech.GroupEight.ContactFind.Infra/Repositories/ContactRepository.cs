@@ -26,9 +26,16 @@ namespace Postech.GroupEight.ContactFind.Infra.Repositories
         /// <returns>The contacts with the specified area code.</returns>
         public IEnumerable<ContactEntity> GetContactsByAreaCode(string areaCode)
         {
-            string collectionName = $"contacts_{areaCode}";
-            var contactCollection = _database.GetCollection<ContactEntity>(collectionName);
-            return contactCollection.Find(_ => true).ToEnumerable();
+            try
+            {
+                string collectionName = $"contacts_{areaCode}";
+                var contactCollection = _database.GetCollection<ContactEntity>(collectionName);
+                return contactCollection.Find(_ => true).ToEnumerable();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"Error when querying contacts for the area code {areaCode}: {ex.Message}", ex);
+            }
         }
     }
 }

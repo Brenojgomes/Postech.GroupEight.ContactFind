@@ -88,16 +88,18 @@ namespace Postech.GroupEight.ContactFind.UnitTests.Configuration
         }
     }
 
-    public class FakeAsyncCursor<T> : IAsyncCursor<T>
+    public class FakeAsyncCursor<TEntity> : IAsyncCursor<TEntity>
     {
-        private readonly IEnumerator<T> _enumerator;
+        private readonly IEnumerable<TEntity> _items;
+        private IEnumerator<TEntity> _enumerator;
 
-        public FakeAsyncCursor(IEnumerable<T> items)
+        public FakeAsyncCursor(IEnumerable<TEntity> items)
         {
-            _enumerator = items.GetEnumerator();
+            _items = items ?? Enumerable.Empty<TEntity>();
+            _enumerator = _items.GetEnumerator();
         }
 
-        public IEnumerable<T> Current => new[] { _enumerator.Current };
+        public IEnumerable<TEntity> Current => new List<TEntity> { _enumerator.Current };
 
         public void Dispose()
         {
@@ -109,9 +111,25 @@ namespace Postech.GroupEight.ContactFind.UnitTests.Configuration
             return _enumerator.MoveNext();
         }
 
-        public Task<bool> MoveNextAsync(CancellationToken cancellationToken)
+        public Task<bool> MoveNextAsync(CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(_enumerator.MoveNext());
+            return Task.FromResult(MoveNext(cancellationToken));
+        }
+
+        public void Reset()
+        {
+            _enumerator = _items.GetEnumerator();
+        }
+    }
+
+
+    public static class MongoCollectionExtensions
+    {
+        public static IFindFluent<TEntity, TEntity> Find<TEntity>(
+            this IMongoCollection<TEntity> collection,
+            FilterDefinition<TEntity> filter)
+        {
+            return collection.Find(filter, null);
         }
     }
 }

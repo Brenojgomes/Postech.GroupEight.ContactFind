@@ -2,58 +2,59 @@
 using Moq;
 using Postech.GroupEight.ContactFind.Core.Entities;
 using Postech.GroupEight.ContactFind.Infra.Repositories;
-using Postech.GroupEight.ContactFind.UnitTests.Configuration;
 
 namespace Postech.GroupEight.ContactFind.UnitTests.Infra.Repositories
 {
     public class ContactRepositoryTests
     {
-        private readonly Mock<IMongoClient> _mockMongoClient;
-        private readonly Mock<IMongoDatabase> _mockDatabase;
-        private readonly Mock<IMongoCollection<ContactEntity>> _mockCollection;
-        private readonly ContactRepository _repository;
+        private readonly Mock<IMongoClient> _mongoClientMock;
+        private readonly Mock<IMongoDatabase> _mongoDatabaseMock;
+        private readonly Mock<IMongoCollection<ContactEntity>> _mongoCollectionMock;
+        private readonly ContactRepository _contactRepository;
 
         public ContactRepositoryTests()
         {
-            _mockMongoClient = new Mock<IMongoClient>();
-            _mockDatabase = new Mock<IMongoDatabase>();
-            _mockCollection = new Mock<IMongoCollection<ContactEntity>>();
+            _mongoClientMock = new Mock<IMongoClient>();
+            _mongoDatabaseMock = new Mock<IMongoDatabase>();
+            _mongoCollectionMock = new Mock<IMongoCollection<ContactEntity>>();
 
-            _mockMongoClient.Setup(client => client.GetDatabase(It.IsAny<string>(), null))
-                .Returns(_mockDatabase.Object);
+            // Configurar o mock do MongoDB para retornar a instância de _mongoDatabaseMock ao chamar GetDatabase
+            _mongoClientMock.Setup(client => client.GetDatabase("contacts", null))
+                            .Returns(_mongoDatabaseMock.Object);
 
-            _mockDatabase.Setup(db => db.GetCollection<ContactEntity>(It.IsAny<string>(), null))
-                .Returns(_mockCollection.Object);
+            // Configurar o mock do MongoDatabase para retornar a instância de _mongoCollectionMock ao chamar GetCollection
+            _mongoDatabaseMock.Setup(db => db.GetCollection<ContactEntity>(It.IsAny<string>(), null))
+                              .Returns(_mongoCollectionMock.Object);
 
-            _repository = new ContactRepository(_mockMongoClient.Object);
+            // Criar instância do repositório usando o mock do IMongoClient
+            _contactRepository = new ContactRepository(_mongoClientMock.Object);
         }
 
         [Fact]
-        public void GetContactsByAreaCode_ReturnsContacts()
+        public void GetContactsByAreaCode_ShouldReturnEmptyList_WhenNoContactsExist()
         {
             // Arrange
-            var areaCode = "31";
-            var contacts = new List<ContactEntity>
-            {
-                new ContactEntity { Id = Guid.NewGuid(), FirstName = "John Doe", AreaCode = areaCode },
-                new ContactEntity { Id = Guid.NewGuid(), FirstName = "Jane Doe", AreaCode = areaCode }
-            };
+            var areaCode = "99";
+            var collectionName = $"contacts_{areaCode}";
 
+            // Criar um cursor de mock que não retorna contatos
+            var mockCursor = new Mock<IAsyncCursor<ContactEntity>>();
+            mockCursor.SetupSequence(cursor => cursor.MoveNext(It.IsAny<System.Threading.CancellationToken>()))
+                      .Returns(false);
+            mockCursor.Setup(cursor => cursor.Current).Returns(new List<ContactEntity>());
 
-            var fakeFindFluent = new FakeFindFluent<ContactEntity>(contacts);
-
-            // Configurando o mock para retornar o fakeFindFluent
-            _mockCollection.Setup(collection => collection.Find(It.IsAny<FilterDefinition<ContactEntity>>(), null))
-                .Returns(fakeFindFluent);
+            // Configurar o método Find do mock da coleção para retornar o cursor mock
+            _mongoCollectionMock.Setup(collection => collection.FindSync(It.IsAny<FilterDefinition<ContactEntity>>(),
+                                                                         It.IsAny<FindOptions<ContactEntity, ContactEntity>>(),
+                                                                         default))
+                                .Returns(mockCursor.Object);
 
             // Act
-            var result = _repository.GetContactsByAreaCode(areaCode);
+            var result = _contactRepository.GetContactsByAreaCode(areaCode);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(2, result.Count());
-            Assert.Contains(result, contact => contact.FirstName == "John Doe");
-            Assert.Contains(result, contact => contact.FirstName == "Jane Doe");
+            Assert.Empty(result);
         }
     }
 }

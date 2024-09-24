@@ -42,12 +42,12 @@ jobs:
             
             - name: Restore dependencies
               run: dotnet restore
-              working-directory: tests/Postech.GroupEight.ContactIntegration.UnitTests
+              working-directory: tests/Postech.GroupEight.ContactFind.UnitTests
 
             - name: Build test project
               run: dotnet build --no-restore
-              working-directory: tests/Postech.GroupEight.ContactIntegration.UnitTests
+              working-directory: tests/Postech.GroupEight.ContactFind.UnitTests
 
             - name: Run tests
               run: dotnet test --verbosity normal
-              working-directory: tests/Postech.GroupEight.ContactIntegration.UnitTests
+              working-directory: tests/Postech.GroupEight.ContactFind.UnitTests

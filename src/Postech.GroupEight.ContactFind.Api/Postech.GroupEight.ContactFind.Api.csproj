@@ -4,10 +4,10 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-	<NoWarn>CS8602</NoWarn>
   </PropertyGroup>
+	
 	<PropertyGroup>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>CS8602</NoWarn>
 		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
 

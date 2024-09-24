@@ -9,6 +9,7 @@ using Postech.GroupEight.ContactFind.Infra;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +58,8 @@ app.UseExceptionHandler(configure =>
         }
     });
 });
+
+app.UseHttpMetrics();
 
 app.MapGet("/contacts", async (IMediator mediator, [AsParameters] FindContactInput request) =>
 {

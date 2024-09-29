@@ -23,7 +23,7 @@ namespace Postech.GroupEight.ContactFind.UnitTests.Application.Handlers
             // Arrange
             List<ContactEntity> contacts = new ContactEntityFaker(areaCode).Generate(10);
             Mock<IContactRepository> contactRepository = new();
-            contactRepository.Setup(c => c.GetContactsByAreaCode(areaCode)).Returns(contacts);
+            contactRepository.Setup(c => c.GetContactsByAreaCode(areaCode)).ReturnsAsync(contacts);
             FindContactByAreaCodeHandler handler = new(contactRepository.Object);
             FindContactInput input = new() { AreaCodeValue = areaCode };
 
@@ -45,7 +45,7 @@ namespace Postech.GroupEight.ContactFind.UnitTests.Application.Handlers
         {
             // Arrange
             Mock<IContactRepository> contactRepository = new();
-            contactRepository.Setup(c => c.GetContactsByAreaCode(areaCode)).Returns(Enumerable.Empty<ContactEntity>());
+            contactRepository.Setup(c => c.GetContactsByAreaCode(areaCode)).ReturnsAsync(Enumerable.Empty<ContactEntity>());
             FindContactByAreaCodeHandler handler = new(contactRepository.Object);
             FindContactInput input = new() { AreaCodeValue = areaCode };
 
@@ -53,6 +53,5 @@ namespace Postech.GroupEight.ContactFind.UnitTests.Application.Handlers
             NotFoundException exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(input, CancellationToken.None));
             exception.Message.Should().NotBeNullOrEmpty();
         }
-
     }
 }

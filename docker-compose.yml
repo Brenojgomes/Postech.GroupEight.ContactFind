@@ -1,17 +1,17 @@
 services:
-  contactfind-api:
+  contactfind_api:
     build:
       context: .
       dockerfile: src/Postech.GroupEight.ContactFind.Api/Dockerfile
-    image: contactfind-api:latest
+    container_name: contactfind_api
     ports:
       - "5266:5266"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
       - MONGO_CONNECTION_STRING=mongodb://fiap:fiap123456@mongodb:27017/admin
     networks:
-      - app-network
+      - techchallenge-worker-persistency_custom_network
 
 networks:
-  app-network:
+  techchallenge-worker-persistency_custom_network:
     external: true

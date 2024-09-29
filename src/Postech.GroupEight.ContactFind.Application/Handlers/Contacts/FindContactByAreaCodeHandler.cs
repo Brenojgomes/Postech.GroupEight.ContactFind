@@ -27,7 +27,7 @@ namespace Postech.GroupEight.ContactFind.Application.Handlers.Contacts
         /// <exception cref="NotFoundException">No contacts were found for the specified filter.</exception>
         public async Task<DefaultOutput<IEnumerable<FindContactByAreaCodeViewModel>>> Handle(FindContactInput request, CancellationToken cancellationToken)
         {
-            IEnumerable<ContactEntity> contacts = _contactRepository.GetContactsByAreaCode(request.AreaCodeValue);
+            IEnumerable<ContactEntity> contacts = await _contactRepository.GetContactsByAreaCode(request.AreaCodeValue);
             NotFoundException.ThrowWhenNullOrEmptyList(contacts, "No contacts found for the area code provided");
             return new DefaultOutput<IEnumerable<FindContactByAreaCodeViewModel>>(true, "The contacts were found successfully.", contacts.AsFindContactByAreaCodeViewModel());
         }

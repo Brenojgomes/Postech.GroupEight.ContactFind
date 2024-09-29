@@ -7,30 +7,26 @@ namespace Postech.GroupEight.ContactFind.Infra.Repositories
     /// <summary>
     /// Represents a repository for managing contacts.
     /// </summary>
-    public class ContactRepository : IContactRepository
+    public class ContactRepository(IMongoClient mongoClient) : IContactRepository
     {
         /// <summary>
         /// The MongoDB client.
         /// </summary>
-        private readonly IMongoDatabase _database;
-
-        public ContactRepository(IMongoClient mongoClient)
-        {
-            _database = mongoClient.GetDatabase("contacts");
-        }
+        private readonly IMongoDatabase _database = mongoClient.GetDatabase("contacts");
 
         /// <summary>
         /// Gets the contacts by area code.
         /// </summary>
         /// <param name="areaCode">The area code.</param>
         /// <returns>The contacts with the specified area code.</returns>
-        public IEnumerable<ContactEntity> GetContactsByAreaCode(string areaCode)
+        public async Task<IEnumerable<ContactEntity>> GetContactsByAreaCode(string areaCode)
         {
             try
             {
                 string collectionName = $"contacts_{areaCode}";
-                var contactCollection = _database.GetCollection<ContactEntity>(collectionName);
-                return contactCollection.Find(_ => true).ToEnumerable();
+                IMongoCollection<ContactEntity> contactCollection = _database.GetCollection<ContactEntity>(collectionName);
+                IAsyncCursor<ContactEntity> queryResult = await contactCollection.FindAsync(_ => true);
+                return await queryResult.ToListAsync();
             }
             catch (Exception ex)
             {

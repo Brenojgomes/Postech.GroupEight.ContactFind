@@ -25,7 +25,7 @@ namespace Postech.GroupEight.ContactFind.Infra.Repositories
             {
                 string collectionName = $"contacts_{areaCode}";
                 IMongoCollection<ContactEntity> contactCollection = _database.GetCollection<ContactEntity>(collectionName);
-                IAsyncCursor<ContactEntity> queryResult = await contactCollection.FindAsync(_ => true);
+                IAsyncCursor<ContactEntity> queryResult = await contactCollection.FindAsync(contact => contact.Active);
                 return await queryResult.ToListAsync();
             }
             catch (Exception ex)

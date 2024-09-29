@@ -50,7 +50,7 @@ namespace Postech.GroupEight.ContactFind.IntegrationTests.Suite.Api
 
         [Fact]
         [Trait("Action", "Contacts")]
-        public async Task FindContactEndpoint_FetchAnExistingContact_ShouldNotFindContact()
+        public async Task FindContactEndpoint_FetchAnNonExistingContact_ShouldNotFindContact()
         {
             // Arrange
             var areaCode = _faker.Address.ZipCode("##");

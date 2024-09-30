@@ -12,6 +12,6 @@ namespace Postech.GroupEight.ContactFind.Core.Interfaces.Repositories
         /// </summary>
         /// <param name="areaCode">The area code to filter contacts.</param>
         /// <returns>An enumerable of contacts.</returns>
-        IEnumerable<ContactEntity> GetContactsByAreaCode(string areaCode);
+        Task<IEnumerable<ContactEntity>> GetContactsByAreaCode(string areaCode);
     }
 }

@@ -12,19 +12,13 @@ using System.Text.Json;
 
 namespace Postech.GroupEight.ContactFind.IntegrationTests.Suite.Api
 {
-    public class ContactFindControllerTests : IClassFixture<WebApplicationFactory<Program>>, IAsyncLifetime
+    public class ContactFindControllerTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>, IAsyncLifetime
     {
-        private readonly WebApplicationFactory<Program> _factory;
-        private readonly Faker _faker;
+        private readonly WebApplicationFactory<Program> _factory = factory;
+        private readonly Faker _faker = new();
         private HttpClient _client;
 
-        public ContactFindControllerTests(WebApplicationFactory<Program> factory)
-        {
-            _factory = factory;
-            _faker = new Faker();
-        }
-
-        public async Task InitializeAsync()
+        public Task InitializeAsync()
         {
             _client = _factory.WithWebHostBuilder(builder =>
             {
@@ -46,16 +40,17 @@ namespace Postech.GroupEight.ContactFind.IntegrationTests.Suite.Api
 
                     var contacts = new List<ContactEntity> { contactEntity };
                     var mockContactRepository = new Mock<IContactRepository>();
-                    mockContactRepository.Setup(repo => repo.GetContactsByAreaCode(areaCode)).Returns(contacts);
+                    mockContactRepository.Setup(repo => repo.GetContactsByAreaCode(areaCode)).ReturnsAsync(contacts);
 
                     services.AddSingleton(mockContactRepository.Object);
                 });
             }).CreateClient();
+            return Task.CompletedTask;
         }
 
         [Fact]
         [Trait("Action", "Contacts")]
-        public async Task FindContactEndpoint_FetchAnExistingContact_ShouldNotFindContact()
+        public async Task FindContactEndpoint_FetchAnNonExistingContact_ShouldNotFindContact()
         {
             // Arrange
             var areaCode = _faker.Address.ZipCode("##");

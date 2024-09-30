@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7465E3C0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postech.GroupEight.ContactFind.UnitTests", "..\tests\Postech.GroupEight.ContactFind.UnitTests\Postech.GroupEight.ContactFind.UnitTests.csproj", "{B53CEE0E-0259-4D5F-AA44-56B2978DB8BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech.GroupEight.ContactFind.IntegrationTests", "Postech.GroupEight.ContactFind.IntegrationTests\Postech.GroupEight.ContactFind.IntegrationTests.csproj", "{5FA5CBA6-32D8-43FA-8C61-C2558A034260}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech.GroupEight.ContactFind.IntegrationTests", "..\tests\Postech.GroupEight.ContactFind.IntegrationTests\Postech.GroupEight.ContactFind.IntegrationTests.csproj", "{5FA5CBA6-32D8-43FA-8C61-C2558A034260}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

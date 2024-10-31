@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: contact-find-api-pod
+  labels:
+    app: contact-find-api
+spec:
+  containers:
+  - name: contact-find-api
+    image: brenojgomes/contactfind_api:1
+    ports:
+    - containerPort: 5266
+    env:
+    - name: ASPNETCORE_ENVIRONMENT
+      value: "Docker"
+    - name: MONGO_CONNECTION_STRING
+      value: "mongodb://fiap:fiap123456@mongodb:27017/admin"

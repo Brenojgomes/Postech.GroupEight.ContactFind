@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contact-find-api-deployment
+  labels:
+    app: contact-find-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: contact-find-api
+  template:
+    metadata:
+      labels:
+        app: contact-find-api
+    spec:
+      containers:
+      - name: contact-find-api
+        image: brenojgomes/contactfind_api:2
+        ports:
+        - containerPort: 5266
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Docker"
+        - name: MONGO_CONNECTION_STRING
+          value: "mongodb://fiap:fiap123456@mongodb-service:27017/admin"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: contact-find-api-service
+spec:
+  selector:
+    app: contact-find-api
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5266 
+      nodePort: 31475

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: contact-find-api
-        image: brenojgomes/contactfind_api:2
+        image: brenojgomes/contactfind_api:3
         ports:
         - containerPort: 5266
         env:

@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using Prometheus;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: false, reloadOnChange: true);
@@ -18,8 +19,15 @@ builder.Services.AddSwaggerGenConfiguration();
 builder.Services.AddMediatR();
 builder.Services.AddDependencyHandler();
 builder.Services.AddInfrastructure();
+builder.Services.AddHealthChecks().AddMongoDbHealthCheck();
 
 WebApplication app = builder.Build();
+
+app.MapHealthChecks("/health");
+app.MapHealthChecks("/ready", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("ready")
+});
 
 app.UseSwagger();
 app.MapSwagger();
